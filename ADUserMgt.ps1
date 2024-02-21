@@ -23,7 +23,7 @@
 $CONFIG = Import-PowerShellDataFile -Path '<script_repository>\config.psd1' -ErrorAction Stop
 
 $CSVPATH = $CONFIG.Paths.CSVInventoryParentPath
-$CSVAUTOPATH = $CONFIG.Paths.CSVInventoryParentPath+$CONFIG.Paths.CSVAutoInventoryName
+$CSVAUTOPATH = $CONFIG.Paths.CSVInventoryParentPath + $CONFIG.Paths.CSVAutoInventoryName
 $CONTINUE = $true
 
 while ($CONTINUE) {
@@ -62,47 +62,55 @@ while ($CONTINUE) {
             $UserPassword = Read-Host -Prompt "Password" -AsSecureString
             $UserEmail = Read-Host -Prompt "Email address" 
             $UserEmployeeID = Read-Host -Prompt "Employee ID"
-            $UserDescription = Read-Host -Prompt "Role :
+            
+            $Again = $true
+            While ($Again) {
+                $UserDescription = Read-Host -Prompt "Role :
     0) Standard user
     1) L1 Administrator (Computers administrators)
     2) L2 Administrator (Servers administrators)
     3) L3 Administrator (Domain administrators)
 Choice"
-            switch ($UserDescription) {
-                0 {
-                    $UserOU = $CONFIG.DomainOU.STANDARD
-                    $p = $UserFirstname.Substring(0, 1)
-                    $UserLogin = $p + $UserName
-                    $UserLogin = $UserLogin.ToLower()
-                    $UserDescription = "Standard domain user"
-                    $UserDisplayName = $UserFirstname + " " + $UserName
-                }
-                1 {
-                    $UserOU = $CONFIG.DomainOU.ADML1
-                    $p = $UserFirstname.Substring(0, 1)
-                    $UserLogin = "adm-l1c-" + $p + $UserName
-                    $UserLogin = $UserLogin.ToLower()
-                    $UserDescription = "L1 - Computers Administrator"
-                    $UserDisplayName = $UserFirstname + " " + $UserName + " L1"
-                }
-                2 {
-                    $UserOU = $CONFIG.DomainOU.ADML2
-                    $p = $UserFirstname.Substring(0, 1)
-                    $UserLogin = "adm-l2c-" + $p + $UserName
-                    $UserLogin = $UserLogin.ToLower()
-                    $UserDescription = "L2 - Servers Administrator"
-                    $UserDisplayName = $UserFirstname + " " + $UserName + " L2"
-                }
-                3 {
-                    $UserOU = $CONFIG.DomainOU.ADML3
-                    $p = $UserFirstname.Substring(0, 1)
-                    $UserLogin = "adm-l3c-" + $p + $UserName
-                    $UserLogin = $UserLogin.ToLower()
-                    $UserDescription = "L3 - Domain Administrator"
-                    $UserDisplayName = $UserFirstname + " " + $UserName + " L3"
-                }
-                Default { 
-                    Write-Host -ForegroundColor Red "Wrong choice" 
+                switch ($UserDescription) {
+                    0 {
+                        $UserOU = $CONFIG.DomainOU.STANDARD
+                        $p = $UserFirstname.Substring(0, 1)
+                        $UserLogin = $p + $UserName
+                        $UserLogin = $UserLogin.ToLower()
+                        $UserDescription = "Standard domain user"
+                        $UserDisplayName = $UserFirstname + " " + $UserName
+                        $Again = $false
+                    }
+                    1 {
+                        $UserOU = $CONFIG.DomainOU.ADML1
+                        $p = $UserFirstname.Substring(0, 1)
+                        $UserLogin = "adm-l1c-" + $p + $UserName
+                        $UserLogin = $UserLogin.ToLower()
+                        $UserDescription = "L1 - Computers Administrator"
+                        $UserDisplayName = $UserFirstname + " " + $UserName + " L1"
+                        $Again = $false
+                    }
+                    2 {
+                        $UserOU = $CONFIG.DomainOU.ADML2
+                        $p = $UserFirstname.Substring(0, 1)
+                        $UserLogin = "adm-l2c-" + $p + $UserName
+                        $UserLogin = $UserLogin.ToLower()
+                        $UserDescription = "L2 - Servers Administrator"
+                        $UserDisplayName = $UserFirstname + " " + $UserName + " L2"
+                        $Again = $false
+                    }
+                    3 {
+                        $UserOU = $CONFIG.DomainOU.ADML3
+                        $p = $UserFirstname.Substring(0, 1)
+                        $UserLogin = "adm-l3c-" + $p + $UserName
+                        $UserLogin = $UserLogin.ToLower()
+                        $UserDescription = "L3 - Domain Administrator"
+                        $UserDisplayName = $UserFirstname + " " + $UserName + " L3"
+                        $Again = $false
+                    }
+                    Default { 
+                        Write-Host -ForegroundColor Red "Wrong choice" 
+                    }
                 }
             }
             $UserGroups = (Get-ADGroup -Filter * -SearchBase $CONFIG.DomainOU.GROUPS).Name | Out-GridView -Title "Choose one or more groups for the user" -PassThru
@@ -346,7 +354,7 @@ Choice"
         }
         9 {
             $DateExport = Get-Date -Format "yyyyMMdd"
-            $CSVMANUALPATH = $CSVPATH+$CONFIG.Paths.CSVManualInventoryName+$DateExport+".csv"
+            $CSVMANUALPATH = $CSVPATH + $CONFIG.Paths.CSVManualInventoryName + $DateExport + ".csv"
             Get-ADUser -Filter * -Properties Surname, GivenName, SamAccountName, EmailAddress, EmployeeNumber, Description, DistinguishedName | 
             Select-Object Surname, GivenName, SamAccountName, Enabled, EmailAddress, EmployeeNumber, Description, DistinguishedName | 
             Sort-Object -Property Surname |
