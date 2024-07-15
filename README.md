@@ -7,9 +7,12 @@ The script can be used to Create, Edit, Delete, Reset, Enable, Disable user acco
 
 It's also possible to administrate MS LAPS with the script.
 
-## Installation via Github
+## Installation
 
-### Installation 
+### Installation via Github
+
+Open PowerShell console as administrator.
+
 ```bash
 git clone https://github.com/Kyube5/ADUserMgt.git
 cd ADUserMgt
@@ -21,6 +24,8 @@ cd ADUserMgt
 Download the zip file and put it in your scripts repository on the server.
 
 Add the repository to the Path variable environment
+
+Open PowerShell console as administrator.
 
 ```bash
 # For the current user only :
@@ -67,7 +72,7 @@ Edit the configuration file : ``config.psd1``
 Run a Powershell prompt as Administrator and type 
 
 ```bash
-ADUserMGT
+ADUserMgt
 ```
 
 Choose your action on the list and follow the instructions.
