@@ -30,14 +30,14 @@ while ($CONTINUE) {
         y {
             # Edit the Path variable for all users
             Write-Host -ForegroundColor Blue "Edit the Path variable environment for all users"
-            setx /M Path "%Path%;$ScriptRepo\ADUserMgt"
+            [Environment]::SetEnvironmentVariable("PATH", $Env:PATH + ";$ScriptRepo\ADUserMgt", [EnvironmentVariableTarget]::Machine)
             Write-Host -ForegroundColor Blue "Path edit for all users"
             $CONTINUE = $false
         }
         n {
             # Edit the Path variable for current user
             Write-Host -ForegroundColor Blue "Edit the Path variable environment for the current user"
-            setx Path "%Path%;$ScriptRepo\ADUserMgt"
+            [Environment]::SetEnvironmentVariable("PATH", $Env:PATH + ";$ScriptRepo\ADUserMgt", [EnvironmentVariableTarget]::User)
             Write-Host "Path edit only for current user"
             $CONTINUE = $false
         }
