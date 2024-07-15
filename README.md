@@ -11,7 +11,7 @@ It's also possible to administrate MS LAPS with the script.
 
 ### Installation via Github
 
-Open PowerShell console as administrator.
+Run a Powershell prompt as Administrator.
 
 ```bash
 git clone https://github.com/Kyube5/ADUserMgt.git
