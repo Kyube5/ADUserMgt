@@ -59,7 +59,21 @@ while ($CONTINUE) {
             Write-Host -ForegroundColor Blue "[i] Please fill in the following fields`n"
             $UserFirstname = Read-Host -Prompt "Firstname" 
             $UserName = Read-Host -Prompt "Name"
-            $UserPassword = Read-Host -Prompt "Password" -AsSecureString
+            $WhileTest = 0
+            while ($WhileTest -eq 0) {
+                $UserPassword = Read-Host -Prompt "Password" -AsSecureString
+                $UserCheckPassword = Read-Host -Prompt "Password check" -AsSecureString
+                $UserPasswordClr = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($UserPassword))
+                $UserCheckPasswordClr = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($UserCheckPassword))
+                if ($UserPasswordClr -ceq $UserCheckPasswordClr) {
+                    $WhileTest = 1
+                    $UserPasswordClr = ""
+                    $UserCheckPasswordClr = ""
+                }
+                else {
+                    Write-Warning "[!] The passwords doesn't match"
+                }
+            }
             $UserEmail = Read-Host -Prompt "Email address" 
             $UserEmployeeID = Read-Host -Prompt "Employee ID"
             
@@ -164,19 +178,23 @@ Choice"
                 Write-Host -ForegroundColor Blue "[i] Reset the $UserLogin password"
                 Write-Host
                 $WhileTest = 0
-                while ($WhileTest -eq 0) {
-                    $NewPassword = Read-Host -Prompt "Enter new password" -AsSecureString
-                    $CheckPassword = Read-Host -Prompt "Retype new password" -AsSecureString
-            
-                    if ($NewPassword -like $CheckPassword) {
-                        $WhileTest = 1
-                    }
-                    else {
-                        Write-Warning "[!] The passwords doesn't match"
-                    }
+                $WhileTest = 0
+            while ($WhileTest -eq 0) {
+                $UserPassword = Read-Host -Prompt "Password" -AsSecureString
+                $UserCheckPassword = Read-Host -Prompt "Password check" -AsSecureString
+                $UserPasswordClr = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($UserPassword))
+                $UserCheckPasswordClr = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($UserCheckPassword))
+                if ($UserPasswordClr -ceq $UserCheckPasswordClr) {
+                    $WhileTest = 1
+                    $UserPasswordClr = ""
+                    $UserCheckPasswordClr = ""
                 }
+                else {
+                    Write-Warning "[!] The passwords doesn't match"
+                }
+            }
                 try {
-                    Set-ADAccountPassword -Identity $UserLogin -Reset -NewPassword (ConvertTo-SecureString -AsPlainText $NewPassword -Force)
+                    Set-ADAccountPassword -Identity $UserLogin -Reset -NewPassword (ConvertTo-SecureString -AsPlainText $UserPassword -Force)
                     Write-Host -ForegroundColor Green "[+] Password reset with success"
                 }
                 catch {
