@@ -29,10 +29,10 @@ Open PowerShell console as administrator.
 
 ```bash
 # For the current user only :
-setx Path "%Path%;<script_repository>\ADUserMgt"
+[Environment]::SetEnvironmentVariable("PATH", $Env:PATH + ";<script_repository>\ADUserMgt", [EnvironmentVariableTarget]::Machine)
 
 # For all users :
-setx /M Path "%Path%;<script_repository>\ADUserMgt"
+[Environment]::SetEnvironmentVariable("PATH", $Env:PATH + ";<script_repository>\ADUserMgt", [EnvironmentVariableTarget]::User)
 ```
 
 
