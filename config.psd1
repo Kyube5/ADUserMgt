@@ -13,9 +13,9 @@
     }
 
     Paths = @{
-        CSVInventoryParentPath = ""
-        CSVManualInventoryName = "\Manual\Manual_<Domain>UserInventory_"
-        CSVAutoInventoryName = "<Domain>UserInventory.csv"
+        CSVInventoryParentPath = "<INVENTORY-PATH>\"
+        CSVManualInventoryName = "\Manual\Manual_<DOMAIN>UserInventory_"
+        CSVAutoInventoryName = "<DOMAIN>UserInventory.csv"
     }
     
 }
