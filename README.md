@@ -27,12 +27,12 @@ Add the repository to the Path variable environment
 
 Open PowerShell console as administrator.
 
-```bash
+```powershell
 # For the current user only :
-[Environment]::SetEnvironmentVariable("PATH", $Env:PATH + ";<script_repository>\ADUserMgt", [EnvironmentVariableTarget]::Machine)
+[Environment]::SetEnvironmentVariable("PATH", $Env:PATH + ";<script_repository>\ADUserMgt", [EnvironmentVariableTarget]::User)
 
 # For all users :
-[Environment]::SetEnvironmentVariable("PATH", $Env:PATH + ";<script_repository>\ADUserMgt", [EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("PATH", $Env:PATH + ";<script_repository>\ADUserMgt", [EnvironmentVariableTarget]::Machine)
 ```
 
 
