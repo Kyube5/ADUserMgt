@@ -54,6 +54,7 @@ while ($CONTINUE) {
 
     $choice = Read-Host "Action"
     switch ($choice) {
+### 1 - Create a domain user ###
         1 {
             Write-Host -ForegroundColor Blue "[i] Create a user in the $((Get-ADDomain).DNSRoot) domain`n"
             Write-Host -ForegroundColor Blue "[i] Please fill in the following fields`n"
@@ -171,6 +172,9 @@ Choice"
             Export-Csv -Encoding UTF8 -NoTypeInformation -Delimiter ";" -Path $CSVAUTOPATH
             Write-Host -ForegroundColor Green "[+] The user account has been successfully created"
         }
+
+### 2 - Reset the domain user password ###
+        
         2 {
             $UserLogin = Read-Host -Prompt "User login"
             if (Get-ADUser -Filter { SamAccountName -eq $UserLogin }) {
@@ -205,6 +209,9 @@ Choice"
                 Write-Warning "[!] The login $UserLogin doesn't exits in the domain"
             }
         }
+
+### 3 - Add a user to group(s) ###
+        
         3 {
             $UserLogin = Read-Host -Prompt "User login"
             
@@ -229,6 +236,9 @@ Choice"
                 Write-Warning "[!] The login $UserLogin doesn't exits in the domain"
             }
         }
+
+### 4 - Update user informations ###
+        
         4 {
             $UserLogin = Read-Host -Prompt "User login"
             if (Get-ADUser -Filter { SamAccountName -eq $UserLogin }) {
@@ -282,6 +292,9 @@ Choice"
             Sort-Object -Property Surname |
             Export-Csv -Encoding UTF8 -NoTypeInformation -Delimiter ";" -Path $CSVAUTOPATH
         }
+
+### 5 - Update multiple users informations ###
+        
         5 {
             $CsvFile = Read-Host -Prompt "Enter the path of your CSV file"
             $CsvDatas = Import-Csv -Path $CsvFile -Delimiter ";" -Encoding UTF8
@@ -296,6 +309,9 @@ Choice"
                 }
             }
         }
+
+### 6 - Enable a domain user ###
+        
         6 {
             $UserLogin = Read-Host -Prompt "User login"
             if (Get-ADUser -Filter { SamAccountName -eq $UserLogin }) {
@@ -316,6 +332,9 @@ Choice"
                 Write-Warning "[!] The login $UserLogin doesn't exits in the domain"
             } 
         }
+
+### 7 - Disable a domain user ###
+        
         7 {
             $UserLogin = Read-Host -Prompt "User login"
             if (Get-ADUser -Filter { SamAccountName -eq $UserLogin }) {
@@ -336,6 +355,9 @@ Choice"
                 Write-Warning "[!] The login $UserLogin doesn't exits in the domain"
             } 
         }
+
+### 8 - Delete a domain user ###
+        
         8 {
             $UserLogin = Read-Host -Prompt "User login"
             if (Get-ADUser -Filter { SamAccountName -eq $UserLogin }) {
@@ -370,6 +392,9 @@ Choice"
             Sort-Object -Property Surname |
             Export-Csv -Encoding UTF8 -NoTypeInformation -Delimiter ";" -Path $CSVAUTOPATH
         }
+
+### 9 - Get domain user inventory ###
+        
         9 {
             $DateExport = Get-Date -Format "yyyyMMdd"
             $CSVMANUALPATH = $CSVPATH + $CONFIG.Paths.CSVManualInventoryName + $DateExport + ".csv"
@@ -379,6 +404,9 @@ Choice"
             Export-Csv -Encoding UTF8 -NoTypeInformation -Delimiter ";" -Path $CSVMANUALPATH
             Invoke-Item $CSVMANUALPATH
         }
+
+### 10 - Get LAPS information of a domain computer ###
+        
         10 { 
             $ComputerName = Read-Host -Prompt "Computer name"
             Write-Host
@@ -386,12 +414,18 @@ Choice"
             Write-Host
             Get-AdmPwdPassword -ComputerName $ComputerName
         }
+
+### 11 - Get LAPS information of all domain computers ###
+        
         11 { 
             Write-Host
             Write-Host -ForegroundColor Blue "[i] Administrator account informations of all domain computers:"
             Write-Host
             Get-ADComputer -Filter * -SearchBase $CONFIG.DomainOU.COMPUTERS | Get-AdmPwdPassword
         }
+
+### 12 - Reset the Administrator password of a domain computer ###
+        
         12 { 
             $ComputerName = Read-Host -Prompt "Computer name"
             $ResetNow = Read-Host "Instant reset (y/n)"
@@ -414,6 +448,9 @@ Choice"
                 }
             }
         }
+
+### 0 - Exit ###
+        
         0 { 
             $CONTINUE = $false 
         }
