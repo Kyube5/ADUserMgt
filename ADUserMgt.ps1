@@ -20,7 +20,14 @@
 
 #>
 
-Write-Host -ForegroundColor DarkCyan @"
+$CONFIG = Import-PowerShellDataFile -Path '<script_repository>\config.psd1' -ErrorAction Stop
+
+$CSVPATH = $CONFIG.Paths.CSVInventoryParentPath
+$CSVAUTOPATH = $CONFIG.Paths.CSVInventoryParentPath + $CONFIG.Paths.CSVAutoInventoryName
+$CONTINUE = $true
+
+while ($CONTINUE) {
+    Write-Host -ForegroundColor DarkCyan @"
 
     .oPYo. 8PYYo. 8    8                 8oYoYo. .oPYo. OPYPO
     8    8 8    8 8    8 oOOo 8ooo 8PYo  8  8  8 8        8
@@ -31,16 +38,6 @@ oOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOo0oOoOoOoO
 
 
 "@
-
-$CONFIG = Import-PowerShellDataFile -Path '<script_repository>\config.psd1' -ErrorAction Stop
-
-$CSVPATH = $CONFIG.Paths.CSVInventoryParentPath
-$CSVAUTOPATH = $CONFIG.Paths.CSVInventoryParentPath + $CONFIG.Paths.CSVAutoInventoryName
-$CONTINUE = $true
-
-while ($CONTINUE) {
-    Write-Host
-    Write-Host
     Write-Host "************************** DC Administration **************************"
     Write-Host
     Write-Host "1 - Create a domain user"
